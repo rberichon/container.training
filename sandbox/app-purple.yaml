@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: purple
+  name: purple
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: purple
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: purple
+    spec:
+      containers:
+      - image: jpetazzo/color
+        name: color
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: purple
+  name: purple
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: purple
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: purple
+    release: production
+  name: purple-nodeport
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: purple
+  type: NodePort
+status:
+  loadBalancer: {}
